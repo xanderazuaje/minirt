@@ -1,7 +1,7 @@
 NAME	:= libft.a
 CFLAGS	:= -Wextra -Wall -Werror
 
-HEADERS	:= -I ./includes
+HEADERS	:= -I ./include
 SRCS	:= $(shell find ./src -iname "*.c")
 OBJS	:= $(patsubst ./src/%.c, obj/%.o, $(SRCS))
 
