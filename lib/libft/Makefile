@@ -1,5 +1,5 @@
 NAME	:= libft.a
-CFLAGS	:= -Wextra -Wall -Werror
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code
 
 HEADERS	:= -I ./include
 SRCS	:= $(shell find ./src -iname "*.c")

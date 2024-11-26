@@ -1,5 +1,5 @@
 NAME	:= minirt
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g3 -fsanitize=address,thread,leak
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g3 -fsanitize=address,leak
 LIBMLX	:= ./lib/mlx
 LIBFT	:= ./lib/libft
 

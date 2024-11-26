@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:03:55 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/07/13 02:39:32 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/24 11:19:24 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
 char				*ft_strnstr(const char *haystack, const char *needle,
 						size_t len);
 int					ft_atoi(const char *str);
+double				ft_atof(const char *s);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -82,4 +83,5 @@ void				*safe_malloc(size_t size);
 int					start_with(const char *str, const char *find);
 char				*varg_strjoin(int n, ...);
 void				varg_set_null(int n, ...);
+char				*get_next_line(int fd);
 #endif
