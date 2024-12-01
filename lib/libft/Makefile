@@ -1,5 +1,5 @@
 NAME	:= libft.a
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -g3
 
 HEADERS	:= -I ./include
 SRCS	:= $(shell find ./src -iname "*.c")
@@ -9,7 +9,7 @@ all: $(NAME)
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
+	@mold -run $(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
 	@ar -r $(NAME) $(OBJS)

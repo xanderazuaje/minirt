@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_states.h                                     :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 20:58:25 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/24 21:07:39 by xazuaje-         ###   ########.fr       */
+/*   Created: 2024/11/30 12:22:00 by xazuaje-          #+#    #+#             */
+/*   Updated: 2024/12/01 14:49:11 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_STATES_H
-# define PARSE_STATES_H
+#include "libft.h"
+#include <stdlib.h>
 
-typedef enum e_elem_to_parse{
-	ambient_light,
-	camera,
-	focal_light,
-	sphere,
-	plane,
-	cylinder
-} t_elem_to_parse;
+void	*ft_realloc(void *ptr, size_t cursize, size_t size)
+{
+	void	*newptr;
 
-#endif //PARSE_STATES_H
+	if (ptr == 0)
+		return (safe_malloc(size));
+	if (size <= cursize)
+		return (ptr);
+	newptr = safe_malloc(size);
+	ft_memmove(ptr, newptr, cursize);
+	free(ptr);
+	return (newptr);
+}

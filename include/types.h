@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 14:42:36 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/25 18:54:55 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:47:04 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,13 @@ typedef struct s_element_list {
 } t_element_list;
 
 typedef struct s_scene {
+	int8_t camera_count;
 	t_camera *cameras;
 	t_camera *curr_camera;
 	t_ambient_light ambient_light;
+	int8_t lights_count;
 	t_focal_light *lights;
+	int8_t element_count;
 	t_element_list element_list;
 } t_scene;
 
