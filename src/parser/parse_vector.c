@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 19:02:57 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/01 19:03:24 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:18:12 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int parse_vector(char *vec_str, int ln_nb, t_vec3 *dest)
 		free_splitted(&params);
 		return (0);
 	}
-	dest->x = (int8_t)ft_atof(params->string[0]);
-	dest->y = (int8_t)ft_atof(params->string[1]);
-	dest->z = (int8_t)ft_atof(params->string[2]);
+	dest->x = (int8_t) ft_atof(params->string[0]);
+	dest->y = (int8_t) ft_atof(params->string[1]);
+	dest->z = (int8_t) ft_atof(params->string[2]);
 	free_splitted(&params);
 	return (1);
 }

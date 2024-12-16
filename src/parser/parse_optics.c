@@ -14,7 +14,6 @@
 
 int parse_ambience_light(t_splitted *tokens, int line_count, t_scene *scene)
 {
-	t_scene_element scene_element;
 	t_rgba rgba;
 
 	if (tokens->len != 3)
@@ -24,10 +23,9 @@ int parse_ambience_light(t_splitted *tokens, int line_count, t_scene *scene)
 		write(2, "\n", 1);
 		return (0);
 	}
-	scene_element.ambient_light.light_ratio = ft_atof(tokens->string[1]);
+	scene->ambient_light.light_ratio = ft_atof(tokens->string[1]);
 	parse_rgba(tokens->string[2], line_count, &rgba);
-	scene_element.ambient_light.rgba = rgba;
-	scene->ambient_light = scene_element.ambient_light;
+	scene->ambient_light.rgba = rgba;
 	return (1);
 }
 

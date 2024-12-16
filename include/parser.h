@@ -15,6 +15,7 @@
 
 # include <libft.h>
 # include <types.h>
+# include <vec3_operations.h>
 #include <fcntl.h>
 
 typedef enum e_elem_to_parse{
