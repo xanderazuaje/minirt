@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 18:59:47 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/01 19:00:48 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:44:07 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int parse_sphere(t_splitted *tokens, int line_count, t_scene *scene)
 	parse_vector(tokens->string[1], line_count, &vec3);
 	scene_element.sphere.coords = vec3;
 	scene_element.sphere.diameter = (int8_t)ft_atof(tokens->string[2]);
+	scene_element.sphere.radius /= 2;
 	parse_rgba(tokens->string[3], line_count, &rgba);
 	scene_element.sphere.rgba = rgba;
 	store_element(scene, scene_element, SPHERE);

@@ -8,20 +8,34 @@ LIBS	:= $(LIBMLX)/build/libmlx42.a $(LIBFT)/libft.a -ldl -lglfw -pthread -lm
 SRCS	:= $(shell find ./src -iname "*.c")
 OBJS	:= $(patsubst src/%.c, obj/%.o, $(SRCS))
 
+USE_MOLD ?= 0
+
+ifdef USE_MOLD
+	ifeq ($(USE_MOLD), 1)
+		COMPILER := mold -run $(CC)
+	else
+		COMPILER := $(CC)
+	endif
+else
+		COMPILER := $(CC)
+endif
+
 all: libmlx libft $(NAME)
 
 libmlx:
 	@cmake -DDEBUG=1 $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
 libft:
-	make -C $(LIBFT)
+	@echo compiling libft...
+	@make -C $(LIBFT) USE_MOLD=$(USE_MOLD)
+	@echo libft done!
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
-	@mold -run $(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(COMPILER) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(COMPILER) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -rf obj/

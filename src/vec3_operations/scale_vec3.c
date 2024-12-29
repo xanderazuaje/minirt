@@ -14,7 +14,7 @@
 
 t_vec3	scale_vec3(t_vec3 vec, double scalar)
 {
-	return (t_vec3{
+	return ((t_vec3){
 			vec.x * scalar,
 			vec.y * scalar,
 			vec.z * scalar

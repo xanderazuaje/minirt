@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   normalize_vec3.c                                   :+:      :+:    :+:   */
+/*   cylinder_intersection.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 14:08:17 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/09 14:22:14 by xazuaje-         ###   ########.fr       */
+/*   Created: 2024/12/17 21:00:41 by xazuaje-          #+#    #+#             */
+/*   Updated: 2024/12/17 21:57:02 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vec3_operations.h>
+#include <intersection.h>
 
-t_vec3	normalize_vec3(t_vec3 vec, double module)
+short cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
-	if (module == 0)
-	{
-		return ((t_vec3){0, 0, 0});
-	}
-	return ((t_vec3){
-			vec.x / module,
-			vec.y / module,
-			vec.z / module
-		});
+	t_cylinder *c;
+	c = &elem->cylinder;
+	(void)bounce;
+
+	return 0;
 }

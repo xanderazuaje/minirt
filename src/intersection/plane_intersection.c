@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   normalize_vec3.c                                   :+:      :+:    :+:   */
+/*   plane_intersection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 14:08:17 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/09 14:22:14 by xazuaje-         ###   ########.fr       */
+/*   Created: 2024/12/17 21:00:28 by xazuaje-          #+#    #+#             */
+/*   Updated: 2024/12/28 23:17:56 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vec3_operations.h>
+#include <intersection.h>
 
-t_vec3	normalize_vec3(t_vec3 vec, double module)
+short plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
-	if (module == 0)
-	{
-		return ((t_vec3){0, 0, 0});
-	}
-	return ((t_vec3){
-			vec.x / module,
-			vec.y / module,
-			vec.z / module
-		});
+	t_plane *p;
+	p = &elem->plane;
+	(void)bounce;
+	(void)ray;
+
+	return 0;
 }

@@ -20,8 +20,8 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define WIN_WIDTH 256
-# define WIN_HEIGHT 256
+# define WIN_WIDTH 256.0
+# define WIN_HEIGHT 256.0
 
 // Error functions
 void	ft_error(void);

@@ -5,11 +5,23 @@ HEADERS	:= -I ./include
 SRCS	:= $(shell find ./src -iname "*.c")
 OBJS	:= $(patsubst ./src/%.c, obj/%.o, $(SRCS))
 
+USE_MOLD ?= 0
+
+ifdef USE_MOLD
+    ifeq ($(USE_MOLD), 1)
+        COMPILER := mold -run $(CC)
+    else
+        COMPILER := $(CC)
+    endif
+else
+    COMPILER := $(CC)
+endif
+
 all: $(NAME)
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
-	@mold -run $(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
+	@$(COMPILER) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
 	@ar -r $(NAME) $(OBJS)

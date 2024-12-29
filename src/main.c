@@ -6,14 +6,13 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 09:04:35 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/02 15:25:08 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/12/29 11:58:31 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 #include <types.h>
 #include <parser.h>
-
 
 void free_scene(t_scene *scene)
 {
@@ -39,38 +38,43 @@ int get_rgba(t_rgba a)
 
 mlx_image_t *show_angles(t_camera camera, mlx_t *mlx)
 {
-	int x;
-	int y;
+	int coords[2];
 	mlx_image_t *img;
-	(void)camera;
+	t_ray *rays;
 
-	x = 0;
-	y = 0;
 	img = mlx_new_image(mlx, mlx->width, mlx->height);
 	if (!img)
 		return NULL;
-	while (x < mlx->width)
+	rays = (t_ray *)malloc(sizeof(t_ray) * mlx->width * mlx->height);
+	coords[0] = 0;
+	coords[1] = 1;
+	while (coords[0] < mlx->width)
 	{
-		while (y < mlx->height)
+		while (coords[1] < mlx->height)
 		{
-			//print uv coordinates
-			int real_x;
-			int real_y;
-			double uv_x = (double)(WIN_WIDTH - x) / WIN_WIDTH;
-			double uv_y = (double)(WIN_HEIGHT - y) / WIN_HEIGHT;
-			printf("x -> %f, y -> %f\n", uv_x, uv_y);
-			t_rgba c1;
-			c1.r = 0xFF * uv_x;
-			c1.g = 0xFF * uv_y;
-			c1.b = 0x00;
-			c1.a = 0xFF;
-			mlx_put_pixel(img, x, y, get_rgba(c1));
-			y++;
+			double nx;
+			double ny;
+			double polar;
+			double azimuth;
+			t_ray ray;
+			ny = (coords[1] - WIN_HEIGHT / 2.0)/(WIN_HEIGHT/2.0);
+			nx = (coords[0] - WIN_WIDTH / 2.0)/(WIN_WIDTH/2.0);
+			polar = ny * (21);
+			azimuth = nx * (camera.fov / 2.0);
+			ray.position = camera.coords;
+			ray.direction = polar_to_n_vec3(polar, azimuth);
+			ray.normalized = normalize_vec3(
+				ray.position,
+				module_vec3(ray.position)
+			);
+			printf("x: %f | y: %f | z %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
+			coords[1]++;
 		}
-		y = 0;
-		x++;
+		coords[1] = 0;
+		coords[0]++;
 	}
-	return img;
+	free(rays);
+	return (img);
 }
 
 int	main(int argc, char **argv)
