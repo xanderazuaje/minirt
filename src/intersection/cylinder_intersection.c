@@ -17,6 +17,7 @@ short cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	t_cylinder *c;
 	c = &elem->cylinder;
 	(void)bounce;
+	(void)ray;
 
 	return 0;
 }
