@@ -16,7 +16,7 @@ void	*safe_malloc(size_t size)
 {
 	void	*ptr;
 
-	ptr = malloc(size);
+	ptr = ft_calloc(size, 1);
 	if (!ptr)
 	{
 		perror("malloc:");

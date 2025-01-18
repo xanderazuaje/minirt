@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 08:59:10 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/25 14:38:45 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:09:53 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define WIN_WIDTH 256.0
+# define WIN_WIDTH 420.0
 # define WIN_HEIGHT 256.0
 
 // Error functions

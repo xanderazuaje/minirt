@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 16:15:41 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/16 18:59:45 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:36:25 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef enum e_elem_to_parse
 	focal_light,
 	sphere,
 	plane,
-	cylinder
+	cylinder,
+	invalid = -1
 }	t_elem_to_parse;
 
 void			initial_check(int argc, char **argv);

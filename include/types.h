@@ -6,13 +6,20 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 14:42:36 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/28 19:35:13 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/07 11:07:59 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
 # include <sys/types.h>
+# include "../lib/mlx/include/MLX42/MLX42.h"
+typedef struct s_quaternion {
+	double w;
+	double x;
+	double y;
+	double z;
+} t_quat;
 
 typedef struct s_rgba
 {
@@ -38,7 +45,7 @@ typedef struct s_vec3
 typedef struct s_camera
 {
 	t_vec3	coords;
-	t_vec3	orientation;
+	t_quat rotation;
 	int8_t	fov;
 }	t_camera;
 
@@ -106,6 +113,8 @@ typedef struct s_element_list
 
 typedef struct s_scene
 {
+	mlx_t			*mlx;
+	mlx_image_t		*img;
 	int8_t			camera_count;
 	t_camera		*cameras;
 	int8_t			camera_idx;

@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 16:16:54 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/12/01 16:17:05 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:36:31 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int parse_line(t_splitted *tokens, t_scene *scene, int line_count)
 	t_elem_to_parse elem_to_parse;
 
 	elem_to_parse = get_token_val(tokens, line_count);
-	if (elem_to_parse == -1)
+	if (elem_to_parse == invalid)
 		return (0);
 	if (elem_to_parse == ambient_light)
 		return parse_ambience_light(tokens, line_count, scene);
