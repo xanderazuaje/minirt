@@ -53,12 +53,9 @@ t_ray init_ray(t_camera camera, const int coords[2])
 	nx = ((coords[0] - WIN_WIDTH / 2.0) / (WIN_WIDTH / 2.0)) * aspect_ratio;
 	ray.position = camera.coords;
 
-	ray.direction = polar_to_n_vec3(
-		ny * (camera.fov) + 90,
-		nx * (camera.fov)
-	);
+	ray.direction = polar_to_n_vec3(ny * (camera.fov) + 90, nx * (camera.fov));
 	ray.normalized = normalize_vec3(ray.direction, module_vec3(ray.direction));
-	ray.rgba = (t_rgba){0, 0, 0, 0};
+	ray.rgba = (t_rgba){0, 0, 0, 0};/*colores*/
 
 	return (ray);
 }
@@ -68,14 +65,14 @@ t_ray	*set_rays(t_camera camera, mlx_t *mlx)
 	int		xy[2];
 	t_ray	*rays;
 
-	rays = (t_ray *)safe_malloc(sizeof(t_ray) * mlx->width * mlx->height);
+	rays = (t_ray *)safe_malloc(sizeof(t_ray) * mlx->width * mlx->height);/*rayo x pto del mapa*/
 	xy[0] = 0;
 	while (xy[0] < mlx->width)
 	{
 		xy[1] = 0;
 		while (xy[1] < mlx->height)
 		{
-			rays[xy[0] * mlx->height + xy[1]] = init_ray(camera, xy);
+			rays[xy[0] * mlx->height + xy[1]] = init_ray(camera, xy);/*se inicializa el rayo en cada pto del mapa*/
 			xy[1]++;
 		}
 		xy[0]++;
@@ -95,17 +92,17 @@ void key_hook(void *param)
     move_speed = 0.5f;
 
     if (mlx_is_key_down(mlx, MLX_KEY_UP))
-        scene->cameras[0].coords.x += move_speed;
+        scene->cameras[0].coords.x += move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-        scene->cameras[0].coords.x -= move_speed;
+        scene->cameras[0].coords.x -= move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-        scene->cameras[0].coords.y += move_speed;
+        scene->cameras[0].coords.y += move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-        scene->cameras[0].coords.y -= move_speed;
+        scene->cameras[0].coords.y -= move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_J))
-        scene->cameras[0].coords.z += move_speed;
+        scene->cameras[0].coords.z += move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_K))
-        scene->cameras[0].coords.z -= move_speed;
+        scene->cameras[0].coords.z -= move_speed + 4;
     if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
         mlx_close_window(mlx);
 
@@ -134,6 +131,7 @@ void key_hook(void *param)
     free(rays);
 }
 
+/*mientras que recorro el mapa miro si mi rayo choca con alguna de las figuras*/
 void do_ray_trace(t_scene scene, mlx_t *mlx, t_ray *rays, int xy[2])
 {
 	while (xy[0] < mlx->width)
