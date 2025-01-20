@@ -40,7 +40,7 @@ int get_rgba(t_rgba a)
 	return (a.r << 24 | a.g << 16 | a.b << 8 | a.a);
 }
 
-/*t_ray init_ray(t_camera camera, const int coords[2])
+t_ray init_ray(t_camera camera, const int coords[2])
 {
 	double nx;
 	double ny;
@@ -58,7 +58,7 @@ int get_rgba(t_rgba a)
 	ray.rgba = (t_rgba){0, 0, 0, 0};//colores
 
 	return (ray);
-}*/
+}
 
 t_vec3	rotate_vector(t_quat q, t_vec3 v)
 {
@@ -82,7 +82,7 @@ t_vec3	rotate_vector(t_quat q, t_vec3 v)
 
 #include <math.h>
 
-t_ray init_ray(t_camera camera, const int coords[2])
+/*t_ray init_ray(t_camera camera, const int coords[2])
 {
 	t_vec3 forward = rotate_vector(camera.rotation, (t_vec3){0.0f, 0.0f, -1.0f});
 	t_vec3 up = rotate_vector(camera.rotation, (t_vec3){0.0f, 1.0f, 0.0f});
@@ -96,14 +96,14 @@ t_ray init_ray(t_camera camera, const int coords[2])
 	float	screen_half_height = tanf((camera.fov * 0.5f) * (3.14159265358979323846 / 180.0f)); /// 2.0f or *0.5f
 	float	screen_half_width = screen_half_height * aspect_ratio;
 
-	/*t_vec3 screen_center = {
-		camera.coords.x + forward.x,
-		camera.coords.y + forward.y,
-		camera.coords.z + forward.z};*/
+	//t_vec3 screen_center = {
+	//	camera.coords.x + forward.x,
+	//	camera.coords.y + forward.y,
+	//	camera.coords.z + forward.z};
 	
 
 
-	/*LOOP*/
+	//LOOP
 	float u = (coords[1] / (WIN_WIDTH - 1)) * 2.0f - 1.0f; //(2 * ((coords[1] + 0.5f) / WIN_WIDTH) - 1) * screen_half_width;
 	float v = (coords[0] / (WIN_HEIGHT - 1)) * 2.0f - 1.0f; //(1 - 2 *((coords[0] + 0.5f) / WIN_HEIGHT)) * screen_half_height;
 
@@ -121,19 +121,19 @@ t_ray init_ray(t_camera camera, const int coords[2])
 	ray.normalized = normalize_vec3(ray.direction, sqrt(ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
 	ray.position = camera.coords;
 
-	/*t_vec3 pixel_pos = {
-		screen_center.x + u * right.x + v * up.x,
-		screen_center.y + u * right.y + v * up.y,
-		screen_center.z + u * right.z + v * up.z,
-	};
+	//t_vec3 pixel_pos = {
+	//	screen_center.x + u * right.x + v * up.x,
+	//	screen_center.y + u * right.y + v * up.y,
+	//	screen_center.z + u * right.z + v * up.z,
+	//};
 
-	t_ray ray;
-	t_vec3 substract = substract_vec3(pixel_pos, camera.coords);
-	ray.direction = normalize_vec3(substract, sqrt(substract.x * substract.x + substract.y * substract.y + substract.z * substract.z));
-	ray.position = camera.coords;*/
+	//t_ray ray;
+	//t_vec3 substract = substract_vec3(pixel_pos, camera.coords);
+	//ray.direction = normalize_vec3(substract, sqrt(substract.x * substract.x + substract.y * substract.y + substract.z * substract.z));
+	//ray.position = camera.coords;
 	ray.rgba = (t_rgba){0, 0, 0, 0};
 	return (ray);
-}
+}*/
 
 t_ray	*set_rays(t_camera camera, mlx_t *mlx)
 {

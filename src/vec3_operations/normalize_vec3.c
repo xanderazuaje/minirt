@@ -14,6 +14,7 @@
 
 t_vec3	normalize_vec3(t_vec3 vec, double module)
 {
+//	module = sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	if (module == 0)
 	{
 		return ((t_vec3){0, 0, 0});
