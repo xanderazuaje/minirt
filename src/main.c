@@ -221,6 +221,13 @@ void do_ray_trace(t_scene scene, mlx_t *mlx, t_ray *rays, int xy[2])
 			{
 				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFFFFFFFF);
 			}
+			else if (plane_intersection( //Actualmente esto lo que hace es que si interseca pinta de blanco, si no, pues de negro
+				rays[xy[0] * mlx->height + xy[1]],
+				&scene.element_list.elements[0],
+				0 ))
+			{
+				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFF000);
+			}
 			else
 				mlx_put_pixel(scene.img, xy[0], xy[1], 0x000000FF);
 			xy[1]++;

@@ -17,7 +17,7 @@ void	*ft_realloc(void *ptr, size_t cursize, size_t size)
 {
 	void	*newptr;
 
-	if (ptr == 0)
+	if (ptr == NULL || ptr == 0)
 		return (safe_malloc(size));
 	if (size <= cursize)
 		return (ptr);
