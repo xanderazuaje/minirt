@@ -39,7 +39,7 @@ int get_rgba(t_rgba a)
 {
 	return (a.r << 24 | a.g << 16 | a.b << 8 | a.a);
 }
-
+ /*good one*/
 t_ray init_ray(t_camera camera, const int coords[2])
 {
 	double nx;
@@ -133,6 +133,27 @@ t_vec3	rotate_vector(t_quat q, t_vec3 v)
 	//ray.position = camera.coords;
 	ray.rgba = (t_rgba){0, 0, 0, 0};
 	return (ray);
+}*/
+
+/*me trying*/
+/*t_ray init_ray(t_camera camera, const int coords[2])
+{
+	t_vec3 w = rotate_vector(camera.rotation, (t_vec3){0, 0, -1});
+	t_vec3 u = normalize_vec3(cross_product_vec3((t_vec3){0, 1, 0}, w), sqrt(w.x * w.x + w.y * w.y + w.z * w.z));
+	t_vec3 v = cross_product_vec3(w, u);
+
+	w = normalize_vec3(w, sqrt(w.x * w.x + w.y * w.y + w.z * w.z));
+	u = normalize_vec3(u, sqrt(u.x * u.x + u.y * u.y + u.z * u.z));
+	v = normalize_vec3(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+
+	camera.fov = camera.fov * (3.14159265358979323846 / 180);
+	float aspect_ratio = WIN_WIDTH / WIN_HEIGHT;
+	float height = 2 * tan(camera.fov / 2);
+	float width = aspect_ratio * height;
+
+	float nx = ((coords[0] + 0.5) / width) - 0.5;
+	float ny = (0.5 - ((coords[1] + 0.5) / height));
+	float pixel_pos = //x ⋅ width ⋅ u + y ⋅ height ⋅ v − w
 }*/
 
 t_ray	*set_rays(t_camera camera, mlx_t *mlx)
