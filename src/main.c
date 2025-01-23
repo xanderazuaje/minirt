@@ -30,6 +30,7 @@ void init_scene(t_scene *scene)
 	scene->element_list.types = NULL;
 	scene->element_list.func = NULL;
 	scene->lights = NULL;
+	scene->cameras = NULL;
 	scene->element_count = 0;
 	scene->camera_count = 0;
 	scene->lights_count = 0;
@@ -40,7 +41,7 @@ int get_rgba(t_rgba a)
 	return (a.r << 24 | a.g << 16 | a.b << 8 | a.a);
 }
  /*good one*/
-t_ray init_ray(t_camera camera, const int coords[2])
+/*t_ray init_ray(t_camera camera, const int coords[2])
 {
 	double nx;
 	double ny;
@@ -58,7 +59,7 @@ t_ray init_ray(t_camera camera, const int coords[2])
 	ray.rgba = (t_rgba){0, 0, 0, 0};//colores
 
 	return (ray);
-}
+}*/
 
 t_vec3	rotate_vector(t_quat q, t_vec3 v)
 {
@@ -136,10 +137,11 @@ t_vec3	rotate_vector(t_quat q, t_vec3 v)
 }*/
 
 /*me trying*/
-/*t_ray init_ray(t_camera camera, const int coords[2])
+t_ray init_ray(t_camera camera, const int coords[2])
 {
 	t_vec3 w = rotate_vector(camera.rotation, (t_vec3){0, 0, -1});
-	t_vec3 u = normalize_vec3(cross_product_vec3((t_vec3){0, 1, 0}, w), sqrt(w.x * w.x + w.y * w.y + w.z * w.z));
+	t_vec3 upxw = cross_product_vec3((t_vec3){0, 1, 0}, w);
+	t_vec3 u = normalize_vec3(upxw, sqrt(upxw.x * upxw.x + upxw.y * upxw.y + upxw.z * upxw.z));
 	t_vec3 v = cross_product_vec3(w, u);
 
 	w = normalize_vec3(w, sqrt(w.x * w.x + w.y * w.y + w.z * w.z));
@@ -148,13 +150,24 @@ t_vec3	rotate_vector(t_quat q, t_vec3 v)
 
 	camera.fov = camera.fov * (3.14159265358979323846 / 180);
 	float aspect_ratio = WIN_WIDTH / WIN_HEIGHT;
-	float height = 2 * tan(camera.fov / 2);
-	float width = aspect_ratio * height;
+	float f_len = tanf(camera.fov / 2);
+	//float width = aspect_ratio * height;
 
-	float nx = ((coords[0] + 0.5) / width) - 0.5;
-	float ny = (0.5 - ((coords[1] + 0.5) / height));
-	float pixel_pos = //x ⋅ width ⋅ u + y ⋅ height ⋅ v − w
-}*/
+	float nx = ((2 * (coords[0] + 0.5) / WIN_WIDTH) - 1) * aspect_ratio * f_len;
+	float ny = (1 - 2 * ((coords[1] + 0.5) / WIN_HEIGHT)) * f_len;
+	t_vec3 mid1_pixel_pos = {((nx) * u.x), ((nx) * u.y), ((nx) * u.z)};
+	t_vec3 mid2_pixel_pos = {((ny ) * v.x), ((ny ) * v.y), ((ny ) * v.z)};
+	t_vec3 pixel_pos = {mid1_pixel_pos.x + mid2_pixel_pos.x - w.x,
+						mid1_pixel_pos.y + mid2_pixel_pos.y - w.y,
+						mid1_pixel_pos.z + mid2_pixel_pos.z - w.z};
+
+	t_ray ray;
+	ray.direction = normalize_vec3(pixel_pos, sqrt(pixel_pos.x * pixel_pos.x + pixel_pos.y * pixel_pos.y + pixel_pos.z * pixel_pos.z));
+	ray.normalized = normalize_vec3(ray.direction, sqrt(ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
+	ray.position = camera.coords;
+	ray.rgba = (t_rgba){0, 0, 0, 0};
+	return (ray);
+}
 
 t_ray	*set_rays(t_camera camera, mlx_t *mlx)
 {
@@ -247,7 +260,7 @@ void do_ray_trace(t_scene scene, mlx_t *mlx, t_ray *rays, int xy[2])
 				&scene.element_list.elements[0],
 				0 ))
 			{
-				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFF000);
+				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFF000000);
 			}
 			else
 				mlx_put_pixel(scene.img, xy[0], xy[1], 0x000000FF);
@@ -267,6 +280,7 @@ int	main(int argc, char **argv)
 	init_scene(&scene);
 	initial_check(argc, argv);
 	parse_rt_file(argv[1], &scene);
+	write(1, "HOLA\n", 6);
 	mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "minirt", false);
 	rays = set_rays(scene.cameras[0], mlx);
 	scene.img = mlx_new_image(mlx, mlx->width, mlx->height);

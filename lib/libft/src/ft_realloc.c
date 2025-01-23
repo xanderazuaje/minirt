@@ -22,7 +22,8 @@ void	*ft_realloc(void *ptr, size_t cursize, size_t size)
 	if (size <= cursize)
 		return (ptr);
 	newptr = safe_malloc(size);
-	ft_memmove(ptr, newptr, cursize);
-	free(ptr);
+	ft_memmove(newptr, ptr, cursize);
+	if (ptr)
+		free(ptr);
 	return (newptr);
 }
