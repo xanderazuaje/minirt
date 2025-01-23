@@ -6,44 +6,33 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:41:57 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/30 13:23:49 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/23 20:22:42 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	parse_decimal(const char **s, double *a, int *e, unsigned char *c)
-{
-	while (*c != '\0' && ft_isdigit(*c))
-	{
-		*c = **s;
-		*a = *a * 10.0 + (*c - '0');
-		*e = *e - 1;
-		(*s)++;
-	}
-}
-
 double	ft_atof(const char *s)
 {
-	double			a;
-	int				e;
-	unsigned char	c;
+	double	a;
+    float	i;
 
 	a = 0.0;
-	e = 0;
-	c = *s;
-	while (c != '\0' && ft_isdigit(c))
+    i = 10;
+	while (*s != '\0' && ft_isdigit(*s))
 	{
-		c = *s;
-		a = a * 10.0 + (c - '0');
+		a = a * 10.0 + (*s - '0');
 		s++;
 	}
-	if (c == '.')
-		parse_decimal(&s, &a, &e, &c);
-	while (e < 0)
+	if (*s == '.')
 	{
-		a *= 0.1;
-		e++;
+		s++;
+		while (*s != '\0' && ft_isdigit(*s))
+		{
+			a += (*s - '0') / i;
+            i *= 10;
+			s++;
+		}
 	}
 	return (a);
 }
