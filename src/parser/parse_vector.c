@@ -28,6 +28,7 @@ int parse_vector(char *vec_str, int ln_nb, t_vec3 *dest)
 	dest->x = (int8_t) ft_atof(params->string[0]);
 	dest->y = (int8_t) ft_atof(params->string[1]);
 	dest->z = (int8_t) ft_atof(params->string[2]);
+	//printf("tokens string kdhfvkb: i %f j %f k %f\n", dest->x, dest->y, dest->z);
 	free_splitted(&params);
 	return (1);
 }

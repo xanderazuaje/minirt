@@ -50,7 +50,9 @@ int parse_camera(t_splitted *tokens, int line_count, t_scene *scene)
 	parse_vector(tokens->string[2], line_count, &orientation);
 
 	// Normalizar el vector de orientación (asegurarse de que es unitario)
+	//printf("modulo %f\n",module_vec3(orientation));
 	orientation = normalize_vec3(orientation, module_vec3(orientation));
+	//printf("tokens string 2: i %f j %f k %f\n", orientation.x, orientation.y, orientation.z);
 
 	// Convertir el vector de orientación a un cuaternión de rotación
 	camera.rotation = vec3_to_quaternion(orientation);
