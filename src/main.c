@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 09:04:35 by xazuaje-          #+#    #+#             */
-/*   Updated: 2025/01/18 16:43:30 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/24 13:34:43 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,28 +190,27 @@ t_ray	*set_rays(t_camera camera, mlx_t *mlx)
 }
 
 //TODO: Hacer que muva la cámara
+#define MOVE_SPEED 0.5f
 void key_hook(void *param)
 {
     t_scene *scene;
     mlx_t *mlx;
-    float move_speed;
 
     scene = ((t_scene *)param);
     mlx = scene->mlx;
-    move_speed = 0.5f;
 
     if (mlx_is_key_down(mlx, MLX_KEY_UP))
-        scene->cameras[0].coords.x += move_speed + 4;
+        scene->cameras[0].coords.y += MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-        scene->cameras[0].coords.x -= move_speed + 4;
+        scene->cameras[0].coords.y -= MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-        scene->cameras[0].coords.y += move_speed + 4;
+        scene->cameras[0].coords.x += MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-        scene->cameras[0].coords.y -= move_speed + 4;
+        scene->cameras[0].coords.x -= MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_J))
-        scene->cameras[0].coords.z += move_speed + 4;
+        scene->cameras[0].coords.z += MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_K))
-        scene->cameras[0].coords.z -= move_speed + 4;
+        scene->cameras[0].coords.z -= MOVE_SPEED;
     if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
         mlx_close_window(mlx);
 
@@ -248,19 +247,12 @@ void do_ray_trace(t_scene scene, mlx_t *mlx, t_ray *rays, int xy[2])
 		while (xy[1] < mlx->height)
 		{
 			//TODO: Hacerlo con cada una de las figuras
-			if (sphere_intersection( //Actualmente esto lo que hace es que si interseca pinta de blanco, si no, pues de negro
+			if (scene.element_list.func[0](
 				rays[xy[0] * mlx->height + xy[1]],
 				&scene.element_list.elements[0],
 				0 ))
 			{
 				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFFFFFFFF);
-			}
-			else if (plane_intersection( //Actualmente esto lo que hace es que si interseca pinta de blanco, si no, pues de negro
-				rays[xy[0] * mlx->height + xy[1]],
-				&scene.element_list.elements[0],
-				0 ))
-			{
-				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFF000000);
 			}
 			else
 				mlx_put_pixel(scene.img, xy[0], xy[1], 0x000000FF);
