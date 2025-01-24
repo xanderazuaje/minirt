@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 09:04:35 by xazuaje-          #+#    #+#             */
-/*   Updated: 2025/01/24 13:34:43 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:32:20 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <types.h>
 #include <parser.h>
 #include <quaternion_operations.h>
+#include <camera_controls.h>
+#include <rays.h>
 
 void free_scene(t_scene *scene)
 {
@@ -61,25 +63,6 @@ int get_rgba(t_rgba a)
 	return (ray);
 }*/
 
-t_vec3	rotate_vector(t_quat q, t_vec3 v)
-{
-	t_quat p = {0, v.x, v.y, v.z};
-	t_quat qp = {
-		q.w * p.w - q.x * p.x - q.y * p.y - q.z * p.z,
-        q.w * p.x + q.x * p.w + q.y * p.z - q.z * p.y,
-        q.w * p.y - q.x * p.z + q.y * p.w + q.z * p.x,
-        q.w * p.z + q.x * p.y - q.y * p.x + q.z * p.w
-	};
-
-	t_quat q_conj = {q.w, -q.y, -q.y, -q.z};
-	t_quat result = {
-		qp.w * q_conj.w - qp.x * q_conj.x - qp.y * q_conj.y - qp.z * q_conj.z,
-        qp.w * q_conj.x + qp.x * q_conj.w + qp.y * q_conj.z - qp.z * q_conj.y,
-        qp.w * q_conj.y - qp.x * q_conj.z + qp.y * q_conj.w + qp.z * q_conj.x,
-        qp.w * q_conj.z + qp.x * q_conj.y - qp.y * q_conj.x + qp.z * q_conj.w
-	};
-	return ((t_vec3){result.x, result.y, result.z});
-}
 
 #include <math.h>
 
@@ -136,133 +119,6 @@ t_vec3	rotate_vector(t_quat q, t_vec3 v)
 	return (ray);
 }*/
 
-/*me trying*/
-t_ray init_ray(t_camera camera, const int coords[2])
-{
-	t_vec3 w = rotate_vector(camera.rotation, (t_vec3){0, 0, -1});
-	t_vec3 upxw = cross_product_vec3((t_vec3){0, 1, 0}, w);
-	t_vec3 u = normalize_vec3(upxw, sqrt(upxw.x * upxw.x + upxw.y * upxw.y + upxw.z * upxw.z));
-	t_vec3 v = cross_product_vec3(w, u);
-
-	w = normalize_vec3(w, sqrt(w.x * w.x + w.y * w.y + w.z * w.z));
-	u = normalize_vec3(u, sqrt(u.x * u.x + u.y * u.y + u.z * u.z));
-	v = normalize_vec3(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
-
-	camera.fov = camera.fov * (3.14159265358979323846 / 180);
-	float aspect_ratio = WIN_WIDTH / WIN_HEIGHT;
-	float f_len = tanf(camera.fov / 2);
-	//float width = aspect_ratio * height;
-
-	float nx = ((2 * (coords[0] + 0.5) / WIN_WIDTH) - 1) * aspect_ratio * f_len;
-	float ny = (1 - 2 * ((coords[1] + 0.5) / WIN_HEIGHT)) * f_len;
-	t_vec3 mid1_pixel_pos = {((nx) * u.x), ((nx) * u.y), ((nx) * u.z)};
-	t_vec3 mid2_pixel_pos = {((ny ) * v.x), ((ny ) * v.y), ((ny ) * v.z)};
-	t_vec3 pixel_pos = {mid1_pixel_pos.x + mid2_pixel_pos.x - w.x,
-						mid1_pixel_pos.y + mid2_pixel_pos.y - w.y,
-						mid1_pixel_pos.z + mid2_pixel_pos.z - w.z};
-
-	t_ray ray;
-	ray.direction = normalize_vec3(pixel_pos, sqrt(pixel_pos.x * pixel_pos.x + pixel_pos.y * pixel_pos.y + pixel_pos.z * pixel_pos.z));
-	ray.normalized = normalize_vec3(ray.direction, sqrt(ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
-	ray.position = camera.coords;
-	ray.rgba = (t_rgba){0, 0, 0, 0};
-	return (ray);
-}
-
-t_ray	*set_rays(t_camera camera, mlx_t *mlx)
-{
-	int		xy[2];
-	t_ray	*rays;
-
-	rays = (t_ray *)safe_malloc(sizeof(t_ray) * mlx->width * mlx->height);/*rayo x pto del mapa*/
-	xy[0] = 0;
-	while (xy[0] < mlx->width)
-	{
-		xy[1] = 0;
-		while (xy[1] < mlx->height)
-		{
-			rays[xy[0] * mlx->height + xy[1]] = init_ray(camera, xy);/*se inicializa el rayo en cada pto del mapa*/
-			xy[1]++;
-		}
-		xy[0]++;
-	}
-	return (rays);
-}
-
-//TODO: Hacer que muva la cámara
-#define MOVE_SPEED 0.5f
-void key_hook(void *param)
-{
-    t_scene *scene;
-    mlx_t *mlx;
-
-    scene = ((t_scene *)param);
-    mlx = scene->mlx;
-
-    if (mlx_is_key_down(mlx, MLX_KEY_UP))
-        scene->cameras[0].coords.y += MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-        scene->cameras[0].coords.y -= MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-        scene->cameras[0].coords.x += MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-        scene->cameras[0].coords.x -= MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_J))
-        scene->cameras[0].coords.z += MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_K))
-        scene->cameras[0].coords.z -= MOVE_SPEED;
-    if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-        mlx_close_window(mlx);
-
-    // Recalculate rays and redraw image
-    t_ray *rays = set_rays(scene->cameras[0], mlx);
-    int xy[2] = {0, 0};
-
-    while (xy[0] < mlx->width)
-    {
-        while (xy[1] < mlx->height)
-        {
-            if (sphere_intersection(
-                rays[xy[0] * mlx->height + xy[1]],
-                &scene->element_list.elements[0],
-                0))
-            {
-                mlx_put_pixel(scene->img, xy[0], xy[1], 0xFFFFFFFF);
-            }
-            else
-                mlx_put_pixel(scene->img, xy[0], xy[1], 0x000000FF);
-            xy[1]++;
-        }
-        xy[1] = 0;
-        xy[0]++;
-    }
-    free(rays);
-}
-
-/*mientras que recorro el mapa miro si mi rayo choca con alguna de las figuras*/
-void do_ray_trace(t_scene scene, mlx_t *mlx, t_ray *rays, int xy[2])
-{
-	while (xy[0] < mlx->width)
-	{
-		while (xy[1] < mlx->height)
-		{
-			//TODO: Hacerlo con cada una de las figuras
-			if (scene.element_list.func[0](
-				rays[xy[0] * mlx->height + xy[1]],
-				&scene.element_list.elements[0],
-				0 ))
-			{
-				mlx_put_pixel(scene.img, xy[0], xy[1], 0xFFFFFFFF);
-			}
-			else
-				mlx_put_pixel(scene.img, xy[0], xy[1], 0x000000FF);
-			xy[1]++;
-		}
-		xy[1] = 0;
-		xy[0]++;
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_scene scene;
@@ -279,9 +135,8 @@ int	main(int argc, char **argv)
 	int xy[2];
 	xy[0] = 0;
 	xy[1] = 0;
-	do_ray_trace(scene, mlx, rays, xy);
 	scene.mlx = mlx;
-	mlx_loop_hook(mlx, key_hook, &scene);
+	mlx_loop_hook(mlx, camera_controls, &scene);
 	mlx_image_to_window(mlx, scene.img, 0, 0);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, scene.img);

@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 14:07:48 by xazuaje-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:29:39 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:24:37 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ t_vec3	rodrigues_rotation_vec3(t_vec3 v, t_vec3 k, double tetha);
 t_vec3	scale_vec3(t_vec3 vec, double scalar);
 t_vec3	substract_vec3(t_vec3 v1, t_vec3 v2);
 t_vec3	polar_to_n_vec3(double polar, double azimuth);
+t_vec3	quaternion_rotation_vec3(t_quat q, t_vec3 v);
 int		is_equal_ver3(t_vec3 v1, t_vec3 v2);
 #endif //VEC3_OPERATIONS_H
