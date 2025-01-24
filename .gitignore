@@ -2,3 +2,4 @@
 minirt
 build
 .idea
+*.a
