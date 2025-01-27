@@ -46,7 +46,7 @@ typedef struct s_camera
 {
 	t_vec3	coords;
 	t_quat rotation;
-	int8_t	fov;
+	float	fov;
 }	t_camera;
 
 typedef struct s_focal_light
