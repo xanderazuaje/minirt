@@ -14,42 +14,21 @@
 
 short plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
-	t_plane *p;
-    t_vec3 oc; // Vector from ray origin to a point on the plane
-    double t;
-    double denom;
-
-    p = &elem->plane;
+    t_plane *p;
     (void)bounce;
+    p = &elem->plane;
+    t_vec3  origin_less_pplane = substract_vec3(ray.direction, p->coords);
+    float   origin_less_plane_o_normal = dot_product_vec3(origin_less_pplane, p->rotate_vec);
+    float   dir_o_normal = dot_product_vec3(ray.direction, p->rotate_vec);
 
-    // Normalize the normal vector (rotate_vec is the normal vector)
-    t_vec3 normal = normalize_vec3(p->rotate_vec, p->module); 
+    if (dir_o_normal == 0)
+        return (0);
 
-    // Calculate the vector from the ray origin to a point on the plane (oc)
-    oc = substract_vec3(ray.position, p->coords);
+    float   t = (-origin_less_plane_o_normal / dir_o_normal);
 
-    // Calculate the denominator (dot product of the normal vector and ray's direction)
-    denom = dot_product_vec3(normal, ray.normalized);
-
-    // If the denominator is 0, the ray is parallel to the plane
-    if (denom == 0)
-        return 0;
-
-    // Calculate the intersection parameter t
-    t = -dot_product_vec3(normal, oc) / denom;
-
-    // If t is positive, the ray intersects the plane
-    if (t > 0.001)  // Some epsilon to avoid intersection with the plane behind the ray
-    {
-        ray.rgba = p->rgba;  // Assign the plane's color to the ray
-        return 1;
-    }
-
-    return 0;
-	/*t_plane *p;
-	p = &elem->plane;
-	(void)bounce;
-	(void)ray;
-
-	return 0;*/
+    t_vec3 p_intersection = add_vec3(ray.position, (t_vec3){t * ray.direction.x, t * ray.direction.y, t * ray.direction.z});
+    (void)p_intersection;
+    if (t > 0)
+        return (1);
+    return (0);
 }
