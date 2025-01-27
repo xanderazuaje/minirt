@@ -12,6 +12,7 @@
 
 #include <camera_controls.h>
 #include <quaternion_operations.h>
+#define M_PI 3.14159265358979323846
 
 void rotate_camera(t_quat *rotation, double angle, t_vec3 axis)
 {

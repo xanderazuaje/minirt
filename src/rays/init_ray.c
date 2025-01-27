@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <rays.h>
+#define M_PI 3.14159265358979323846
 
 t_ray init_ray(t_camera camera, const int coords[2])
 {

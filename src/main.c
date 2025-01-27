@@ -63,7 +63,6 @@ int get_rgba(t_rgba a)
 	return (ray);
 }*/
 
-
 #include <math.h>
 
 /*t_ray init_ray(t_camera camera, const int coords[2])
@@ -84,8 +83,6 @@ int get_rgba(t_rgba a)
 	//	camera.coords.x + forward.x,
 	//	camera.coords.y + forward.y,
 	//	camera.coords.z + forward.z};
-	
-
 
 	//LOOP
 	float u = (coords[1] / (WIN_WIDTH - 1)) * 2.0f - 1.0f; //(2 * ((coords[1] + 0.5f) / WIN_WIDTH) - 1) * screen_half_width;
@@ -128,7 +125,6 @@ int	main(int argc, char **argv)
 	init_scene(&scene);
 	initial_check(argc, argv);
 	parse_rt_file(argv[1], &scene);
-	write(1, "HOLA\n", 6);
 	mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "minirt", false);
 	rays = set_rays(scene.cameras[0], mlx);
 	scene.img = mlx_new_image(mlx, mlx->width, mlx->height);

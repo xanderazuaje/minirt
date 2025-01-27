@@ -14,7 +14,7 @@
 
 short plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
-	    t_plane *p;
+	t_plane *p;
     t_vec3 oc; // Vector from ray origin to a point on the plane
     double t;
     double denom;
