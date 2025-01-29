@@ -12,7 +12,7 @@
 
 #include <intersection.h>
 
-short plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
+int plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
     t_plane *p;
     (void)bounce;

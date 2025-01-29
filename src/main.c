@@ -132,7 +132,7 @@ int	main(int argc, char **argv)
 	xy[0] = 0;
 	xy[1] = 0;
 	scene.mlx = mlx;
-	mlx_loop_hook(mlx, camera_controls, &scene);
+	mlx_loop_hook(mlx, camera_controls, &scene);/*esto no va a hacer q todo vaya muy lento si tiene q retrazar los rayos todo el tiempo?*/
 	mlx_image_to_window(mlx, scene.img, 0, 0);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, scene.img);

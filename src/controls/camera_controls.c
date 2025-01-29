@@ -61,7 +61,11 @@ void camera_controls(void *param)
     mlx_t *mlx;
     t_ray *rays;
     int xy[2] = {0, 0};
+    int8_t i = 0;
+    int8_t j = 0;
 
+    xy[0] = 0;
+    xy[1] = 0;
     scene = ((t_scene *)param);
     mlx = scene->mlx;
     move_camera(scene, mlx);
@@ -70,12 +74,21 @@ void camera_controls(void *param)
     {
         while (xy[1] < mlx->height)
         {
-			if (scene->element_list.func[0](
-				rays[xy[0] * mlx->height + xy[1]],
-				&scene->element_list.elements[0],
-				0 ))
-                mlx_put_pixel(scene->img, xy[0], xy[1], 0xFFFFFFFF);
-            else
+            i = scene->element_count - 1;
+            j = 0;
+            while (i >= 0)
+            {
+			    if (scene->element_list.func[i](
+				    rays[xy[0] * mlx->height + xy[1]],
+				    &scene->element_list.elements[0],
+				    0 ))
+                {
+                    mlx_put_pixel(scene->img, xy[0], xy[1], 0xFFFFFFFF);
+                    j = 1;
+                }
+                i--;
+            }
+            if (j == 0)
                 mlx_put_pixel(scene->img, xy[0], xy[1], 0x000000FF);
             xy[1]++;
         }

@@ -19,7 +19,7 @@ b = 2 * (w * ray_direction)
 c = w * w - s_Radius²
 discriminant = b² - 4ac
 */
-short sphere_intersection(t_ray ray, t_scene_element *elem, int bounce)
+int sphere_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
 	t_sphere	*s;
 	(void)bounce;
@@ -36,6 +36,9 @@ short sphere_intersection(t_ray ray, t_scene_element *elem, int bounce)
 
 	float	t1 = ((-b) - (sqrt(discriminant))) / (2 * a);
 	float	t2 = ((-b) + (sqrt(discriminant))) / (2 * a);
+
+	if (t1 < 0 && t2 < 0)
+		return (0);
 
 	t_vec3	p1 = add_vec3(ray.position, (t_vec3){t1 * ray.normalized.x, t1 * ray.normalized.y, t1 * ray.normalized.z});
 	t_vec3	p2 = add_vec3(ray.position, (t_vec3){t2 * ray.normalized.x, t2 * ray.normalized.y, t2 * ray.normalized.z});

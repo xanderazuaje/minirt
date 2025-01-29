@@ -17,7 +17,7 @@ d_perpendicular = ray_direction - (ray_direction · c_axis) * c_axis
 w_perpendicular = w - (w · w) * c_axis
 discriminant = b² - 4ac
 */
-short cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
+int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
 	t_cylinder *cy;
 	(void)bounce;
