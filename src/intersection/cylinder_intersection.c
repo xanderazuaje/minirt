@@ -38,15 +38,15 @@ short cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	if (discriminant < 0)
 		return (0);
 	
-	//float	t1 = ((-b) - (sqrt(discriminant))) / (2 * a);
-	//float	t2 = ((-b) + (sqrt(discriminant))) / (2 * a);
+	float	t1 = ((-b) - (sqrt(discriminant))) / (2 * a);
+	float	t2 = ((-b) + (sqrt(discriminant))) / (2 * a);
 
-	//t_vec3	p1 = add_vec3(ray.position, (t_vec3){t1 * ray.normalized.x, t1 * ray.normalized.y, t1 * ray.normalized.z});
-	//t_vec3	p2 = add_vec3(ray.position, (t_vec3){t2 * ray.normalized.x, t2 * ray.normalized.y, t2 * ray.normalized.z});
+	t_vec3	p1 = add_vec3(ray.position, (t_vec3){t1 * ray.normalized.x, t1 * ray.normalized.y, t1 * ray.normalized.z});
+	t_vec3	p2 = add_vec3(ray.position, (t_vec3){t2 * ray.normalized.x, t2 * ray.normalized.y, t2 * ray.normalized.z});
 
-	//float	h1 = dot_product_vec3(substract_vec3(p1, cy->coords), cy->rotate_vec);
-	//float	h2 = dot_product_vec3(substract_vec3(p2, cy->coords), cy->rotate_vec);
-/*	if ((h1 > (-(cy->height / 2)) && h1 < (cy->height / 2)) || (h2 > (-(cy->height / 2)) && h2 < (cy->height / 2)))
-		return (1);*/
-	return (1);
+	float	h1 = dot_product_vec3(substract_vec3(p1, cy->coords), cy->rotate_vec);
+	float	h2 = dot_product_vec3(substract_vec3(p2, cy->coords), cy->rotate_vec);
+	if ((h1 > (-(cy->height / 2)) && h1 < (cy->height / 2)) || (h2 > (-(cy->height / 2)) && h2 < (cy->height / 2)))
+		return (1);
+	return (0);
 }
