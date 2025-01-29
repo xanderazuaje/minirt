@@ -24,9 +24,9 @@ t_ray init_ray(t_camera camera, const int coords[2])
 	u = normalize_vec3(u, sqrt(u.x * u.x + u.y * u.y + u.z * u.z));
 	v = normalize_vec3(v, sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 
-	camera.fov = camera.fov * (M_PI / 180);
+	float	fov = camera.fov * (M_PI / 180);
 	float aspect_ratio = WIN_WIDTH / WIN_HEIGHT;
-	float f_len = tanf(camera.fov / 2);
+	float f_len = tanf(fov / 2);
 	//float width = aspect_ratio * height;
 
 	float nx = ((2 * (coords[0] + 0.5) / WIN_WIDTH) - 1) * aspect_ratio * f_len;

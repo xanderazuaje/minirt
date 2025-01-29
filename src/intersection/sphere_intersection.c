@@ -25,6 +25,7 @@ int sphere_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	(void)bounce;
 	s = &elem->sphere;
 
+	//printf("%f %f", s->diameter, s->radius);
 	t_vec3	w = substract_vec3(ray.position, s->coords);
 	float	a = dot_product_vec3(ray.normalized, ray.normalized);
 	float	b = 2 * dot_product_vec3(w, ray.normalized);

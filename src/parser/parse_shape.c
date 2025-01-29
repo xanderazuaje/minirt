@@ -26,7 +26,7 @@ int parse_sphere(t_splitted *tokens, int line_count, t_scene *scene)
 	}
 	parse_vector(tokens->string[1], line_count, &vec3);
 	scene_element.sphere.coords = vec3;
-	scene_element.sphere.diameter = (int8_t)ft_atof(tokens->string[2]);
+	scene_element.sphere.diameter = ft_atof(tokens->string[2]);
 	scene_element.sphere.radius = scene_element.sphere.diameter / 2;
 	parse_rgba(tokens->string[3], line_count, &rgba);
 	scene_element.sphere.rgba = rgba;
@@ -74,8 +74,8 @@ int parse_cylinder(t_splitted *tokens, int line_count, t_scene *scene)
 	scene_element.cylinder.coords = vec3;
 	parse_vector(tokens->string[2], line_count, &vec3);
 	scene_element.cylinder.rotate_vec = vec3;
-	scene_element.cylinder.diameter = (int8_t)ft_atof(tokens->string[3]);
-	scene_element.cylinder.height = (int8_t)ft_atof(tokens->string[4]);
+	scene_element.cylinder.diameter = ft_atof(tokens->string[3]);
+	scene_element.cylinder.height = ft_atof(tokens->string[4]);
 	parse_rgba(tokens->string[5], line_count, &rgba);
 	scene_element.cylinder.rgba = rgba;
 	store_element(scene, scene_element, CYLINDER);
