@@ -18,18 +18,84 @@ w_perpendicular = w - (w · w) * c_axis
 discriminant = b² - 4ac
 */
 
-/*int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
+/*// cylinder defined by extremes a and b, and radious ra
+vec4 cylIntersect( in vec3 ro, in vec3 rd, in vec3 a, in vec3 b, float ra )
+{
+    vec3  ba = b  - a;
+    vec3  oc = ro - a;
+    float baba = dot(ba,ba);
+    float bard = dot(ba,rd);
+    float baoc = dot(ba,oc);
+    float k2 = baba            - bard*bard;
+    float k1 = baba*dot(oc,rd) - baoc*bard;
+    float k0 = baba*dot(oc,oc) - baoc*baoc - ra*ra*baba;
+    float h = k1*k1 - k2*k0;
+    if( h<0.0 ) return vec4(-1.0);//no intersection
+    h = sqrt(h);
+    float t = (-k1-h)/k2;
+    // body
+    float y = baoc + t*bard;
+    if( y>0.0 && y<baba ) return vec4( t, (oc+t*rd - ba*y/baba)/ra );
+    // caps
+    t = ( ((y<0.0) ? 0.0 : baba) - baoc)/bard;
+    if( abs(k1+k2*t)<h )
+    {
+        return vec4( t, ba*sign(y)/sqrt(baba) );
+    }
+    return vec4(-1.0);//no intersection
+}
+
+// normal at point p of cylinder (a,b,ra), see above     //shading and lightning
+vec3 cylNormal( in vec3 p, in vec3 a, in vec3 b, float ra )
+{
+    vec3  pa = p - a;
+    vec3  ba = b - a;
+    float baba = dot(ba,ba);
+    float paba = dot(pa,ba);
+    float h = dot(pa,ba)/baba;
+    return (pa - ba*h)/ra;
+*/
+
+int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
 	t_cylinder	*cy;
 	(void)bounce;
 	cy = &elem->cylinder;
 
-	t_vec3 ctop = add_vec3(cy->coords, (t_vec3){(cy->height / 2) * cy->rotate_vec.x, (cy->height / 2) * cy->rotate_vec.y, (cy->height / 2) * cy->rotate_vec.z});
-	t_vec3 ctop = substract_vec3(cy->coords, (t_vec3){(cy->height / 2) * cy->rotate_vec.x, (cy->height / 2) * cy->rotate_vec.y, (cy->height / 2) * cy->rotate_vec.z});
+	t_vec3 b_ctop = add_vec3(cy->coords, (t_vec3){(cy->height / 2) * cy->rotate_vec.x, (cy->height / 2) * cy->rotate_vec.y, (cy->height / 2) * cy->rotate_vec.z});
+	t_vec3 a_cbottom = substract_vec3(cy->coords, (t_vec3){(cy->height / 2) * cy->rotate_vec.x, (cy->height / 2) * cy->rotate_vec.y, (cy->height / 2) * cy->rotate_vec.z});
 
-}*/
+	t_vec3	ba_c_vec_dir = substract_vec3(b_ctop, a_cbottom);
+	t_vec3	oc_ro_less_a = substract_vec3(ray.position, a_cbottom);
 
-int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
+	float	baba = dot_product_vec3(ba_c_vec_dir, ba_c_vec_dir);
+	float	bard = dot_product_vec3(ba_c_vec_dir, ray.normalized);
+	float	baoc = dot_product_vec3(ba_c_vec_dir, oc_ro_less_a);
+
+	float	k2 = baba - bard * bard;
+	float	k1 = baba * dot_product_vec3(oc_ro_less_a, ray.direction) - baoc * bard;
+	float	k0 = baba * dot_product_vec3(oc_ro_less_a, oc_ro_less_a) - baoc * baoc - (cy->diameter / 2) * (cy->diameter / 2) * baba;
+
+	float	h_discriminant = k1 *k1 - k2 * k0;
+	if (h_discriminant < 0)
+		return (0);
+	h_discriminant = sqrt(h_discriminant);
+
+	float	t = (-k1 - h_discriminant) / k2;
+	float	y = baoc + t * bard;
+	if (y > 0.0 && y < baba)
+		return (1); //change vec4( t, (oc+t*rd - ba*y/baba)/ra )
+	if (y < 0.0)
+    	t = (0.0 - baoc) / bard;
+	else
+    	t = (baba - baoc) / bard;
+
+	if (fabs(k1 + k2 * t) < h_discriminant)
+		return (1); //vec4( t, ba*sign(y)/sqrt(baba) )
+	return (0);
+}
+
+/*int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
 	t_cylinder *cy;
 	(void)bounce;
@@ -70,4 +136,4 @@ int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	if ((h1 > (-(cy->height / 2)) && h1 < (cy->height / 2)) || (h2 > (-(cy->height / 2)) && h2 < (cy->height / 2)))
 		return (1);
 	return (0);
-}
+}*/
