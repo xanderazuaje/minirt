@@ -29,7 +29,7 @@ void store_element(t_scene *scene, t_scene_element scene_element, t_element_type
 	scene->element_list.types[scene->element_count - 1] = type;
 	cursize = sizeof(t_ray (*)(t_ray, t_scene_element *)) * (scene->element_count - 1);
 	size = sizeof(t_ray (*)(t_ray, t_scene_element *)) * scene->element_count;
-	scene->element_list.func = (int (**)(t_ray, t_scene_element *, int)) ft_realloc(scene->element_list.func, cursize, size);
+	scene->element_list.func = (int (**)(t_ray *, t_scene_element *, int)) ft_realloc(scene->element_list.func, cursize, size);
 	if (type == SPHERE)
 	{
 		scene->element_list.func[scene->element_count - 1] = sphere_intersection;

@@ -15,7 +15,7 @@
 # include "types.h"
 # include "vec3_operations.h"
 
-int sphere_intersection(t_ray ray, t_scene_element *elem, int bounce);
-int plane_intersection(t_ray ray, t_scene_element *elem, int bounce);
-int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce);
+int sphere_intersection(t_ray *ray, t_scene_element *elem, int bounce);
+int plane_intersection(t_ray *ray, t_scene_element *elem, int bounce);
+int cylinder_intersection(t_ray *ray, t_scene_element *elem, int bounce);
 #endif //INTERSECTION_H

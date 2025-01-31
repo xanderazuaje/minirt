@@ -55,6 +55,13 @@ void move_camera(t_scene *scene, mlx_t *mlx)
         mlx_close_window(mlx);
 }
 
+long put_color(t_ray *ray)
+{
+    //return ((int)ray.rgba.b + (int)ray.rgba.g * 256 + (int)ray.rgba.r * 256 * 256);
+    //return ((255 << 24) | (ray.rgba.r << 16) | (ray.rgba.g << 8) | ray.rgba.b);
+    return ((int)ray->rgba.r << 24 | (int)ray->rgba.g << 16 | (int)ray->rgba.b << 8 | (int)ray->rgba.a);
+}
+
 void camera_controls(void *param)
 {
     t_scene *scene;
@@ -79,11 +86,12 @@ void camera_controls(void *param)
             while (i >= 0)
             {
 			    if (scene->element_list.func[i](
-				    rays[xy[0] * mlx->height + xy[1]],
+				    &rays[xy[0] * mlx->height + xy[1]],
 				    &scene->element_list.elements[0],
 				    0 ))
                 {
-                    int p = 0xFFFFFFFF;
+                    int p = put_color(&rays[xy[0] * mlx->height + xy[1]]);
+                    //printf("(%i, %i, %i)  %i %i\n", rays[xy[0] * mlx->height + xy[1]].rgba.r, rays[xy[0] * mlx->height + xy[1]].rgba.g, rays[xy[0] * mlx->height + xy[1]].rgba.b, p, q);
                     mlx_put_pixel(scene->img, xy[0], xy[1], p);
                     j = 1;
                 }

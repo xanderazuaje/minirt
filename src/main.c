@@ -131,6 +131,24 @@ int	main(int argc, char **argv)
 	int xy[2];
 	xy[0] = 0;
 	xy[1] = 0;
+	/*int i = 0;
+	while (i <= scene.element_count - 1)
+	{
+		printf("%i= ", i);
+		if (scene.element_list.types[i] == SPHERE)
+			printf("sphere = %i (%f, %f, %f)\n", ((t_sphere *)&scene.element_list.elements[i])->diameter, scene.element_list.elements[i].sphere.coords.x, scene.element_list.elements[i].sphere.coords.y, scene.element_list.elements[i].sphere.coords.z);
+		if (scene.element_list.types[i] == PLANE)
+		{
+			printf("plane = (%f, %f, %f)  ", scene.element_list.elements[i].plane.coords.x, scene.element_list.elements[i].plane.coords.y, scene.element_list.elements[i].plane.coords.z);
+			printf("(%f, %f, %f)\n", scene.element_list.elements[i].plane.rotate_vec.x, scene.element_list.elements[i].plane.rotate_vec.y, scene.element_list.elements[i].plane.rotate_vec.z);
+		}
+		if (scene.element_list.types[i] == CYLINDER)
+		{
+			printf("cylinder = %d (%f, %f, %f)", scene.element_list.elements[i].cylinder.diameter, scene.element_list.elements[i].cylinder.coords.x, scene.element_list.elements[i].cylinder.coords.y, scene.element_list.elements[i].cylinder.coords.z);
+			printf("(%f, %f, %f)\n", scene.element_list.elements[i].cylinder.rotate_vec.x, scene.element_list.elements[i].cylinder.rotate_vec.y, scene.element_list.elements[i].cylinder.rotate_vec.z);
+		}
+		i++;
+	}*/
 	scene.mlx = mlx;
 	mlx_loop_hook(mlx, camera_controls, &scene);/*esto no va a hacer q todo vaya muy lento si tiene q retrazar los rayos todo el tiempo?*/
 	mlx_image_to_window(mlx, scene.img, 0, 0);

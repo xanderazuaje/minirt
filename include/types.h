@@ -107,7 +107,7 @@ typedef struct s_element_list
 {
 	t_element_type	*types;
 	t_scene_element	*elements;
-	int (**func)(t_ray, t_scene_element *, int);
+	int (**func)(t_ray *, t_scene_element *, int);
 
 }	t_element_list;
 

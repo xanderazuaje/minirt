@@ -122,7 +122,7 @@ t_vec3	cylinder_normal(t_vec3 point, t_vec3 a_base, t_vec3 b_top, float ra)
 
 }*/
 
-int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
+int cylinder_intersection(t_ray *ray, t_scene_element *elem, int bounce)
 {
 	t_cylinder	*cy;
 	(void)bounce;
@@ -132,14 +132,14 @@ int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	t_vec3 a_cbottom = substract_vec3(cy->coords, (t_vec3){(cy->height / 2) * cy->rotate_vec.x, (cy->height / 2) * cy->rotate_vec.y, (cy->height / 2) * cy->rotate_vec.z});
 
 	t_vec3	ba_c_vec_dir = substract_vec3(b_ctop, a_cbottom);
-	t_vec3	oc_ro_less_a = substract_vec3(ray.position, a_cbottom);
+	t_vec3	oc_ro_less_a = substract_vec3(ray->position, a_cbottom);
 
 	float	baba = dot_product_vec3(ba_c_vec_dir, ba_c_vec_dir);
-	float	bard = dot_product_vec3(ba_c_vec_dir, ray.normalized);
+	float	bard = dot_product_vec3(ba_c_vec_dir, ray->normalized);
 	float	baoc = dot_product_vec3(ba_c_vec_dir, oc_ro_less_a);
 
 	float	k2 = baba - bard * bard;
-	float	k1 = baba * dot_product_vec3(oc_ro_less_a, ray.direction) - baoc * bard;
+	float	k1 = baba * dot_product_vec3(oc_ro_less_a, ray->direction) - baoc * bard;
 	float	k0 = baba * dot_product_vec3(oc_ro_less_a, oc_ro_less_a) - baoc * baoc - (cy->diameter / 2) * (cy->diameter / 2) * baba;
 
 	float	h_discriminant = k1 *k1 - k2 * k0;
@@ -150,14 +150,26 @@ int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	float	t = (-k1 - h_discriminant) / k2;
 	float	y = baoc + t * bard;
 	if (y > 0.0 && y < baba)
+	{
+		ray->rgba.r = cy->rgba.r;
+		ray->rgba.g = cy->rgba.g;
+		ray->rgba.b = cy->rgba.b;
+		ray->rgba.a = 255;
 		return (1); //change vec4( t, (oc+t*rd - ba*y/baba)/ra )
+	}
 	if (y < 0.0)
     	t = (0.0 - baoc) / bard;
 	else
     	t = (baba - baoc) / bard;
 
 	if (fabs(k1 + k2 * t) < h_discriminant)
+	{
+		ray->rgba.r = cy->rgba.r;
+		ray->rgba.g = cy->rgba.g;
+		ray->rgba.b = cy->rgba.b;
+		ray->rgba.a = 255;
 		return (1); //vec4( t, ba*sign(y)/sqrt(baba) )
+	}
 	return (0);
 }
 
@@ -167,8 +179,8 @@ int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 	(void)bounce;
 	cy = &elem->cylinder;
 
-	t_vec3	w = substract_vec3(ray.position, cy->coords);
-	float	d_o_a = dot_product_vec3(ray.normalized, cy->rotate_vec);
+	t_vec3	w = substract_vec3(ray->position, cy->coords);
+	float	d_o_a = dot_product_vec3(ray->normalized, cy->rotate_vec);
 	t_vec3	d_perpendicular = substract_vec3(ray.normalized, (t_vec3){cy->rotate_vec.x * d_o_a, cy->rotate_vec.y * d_o_a, cy->rotate_vec.z * d_o_a});
 	float	w_o_a = dot_product_vec3(w, cy->rotate_vec);
 	t_vec3	w_perpendicular = substract_vec3(w, (t_vec3){cy->rotate_vec.x * w_o_a, cy->rotate_vec.y * w_o_a, cy->rotate_vec.z * w_o_a});

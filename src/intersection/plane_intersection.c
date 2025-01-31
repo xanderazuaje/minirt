@@ -12,15 +12,15 @@
 
 #include <intersection.h>
 
-int plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
+int plane_intersection(t_ray *ray, t_scene_element *elem, int bounce)
 {
     t_plane *p;
     (void)bounce;
     p = &elem->plane;
 
-    t_vec3  origin_less_pplane = substract_vec3(ray.position, p->coords);
+    t_vec3  origin_less_pplane = substract_vec3(ray->position, p->coords);
     float   origin_less_plane_o_normal = dot_product_vec3(origin_less_pplane, p->rotate_vec);
-    float   dir_o_normal = dot_product_vec3(ray.normalized, p->rotate_vec);
+    float   dir_o_normal = dot_product_vec3(ray->normalized, p->rotate_vec);
 
     if (dir_o_normal == 0)
         return (0);
@@ -30,7 +30,11 @@ int plane_intersection(t_ray ray, t_scene_element *elem, int bounce)
     if (t < 0)
         return (0);
 
-    t_vec3 p_intersection = add_vec3(ray.position, (t_vec3){t * ray.normalized.x, t * ray.normalized.y, t * ray.normalized.z});
+    t_vec3 p_intersection = add_vec3(ray->position, (t_vec3){t * ray->normalized.x, t * ray->normalized.y, t * ray->normalized.z});
     (void)p_intersection;
+    ray->rgba.r = p->rgba.r;
+	ray->rgba.g = p->rgba.g;
+	ray->rgba.b = p->rgba.b;
+	ray->rgba.a = 255;
     return (1);
 }
