@@ -83,7 +83,8 @@ void camera_controls(void *param)
 				    &scene->element_list.elements[0],
 				    0 ))
                 {
-                    mlx_put_pixel(scene->img, xy[0], xy[1], 0xFFFFFFFF);
+                    int p = 0xFFFFFFFF;
+                    mlx_put_pixel(scene->img, xy[0], xy[1], p);
                     j = 1;
                 }
                 i--;

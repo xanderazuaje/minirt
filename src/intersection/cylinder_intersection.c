@@ -56,6 +56,72 @@ vec3 cylNormal( in vec3 p, in vec3 a, in vec3 b, float ra )
     return (pa - ba*h)/ra;
 */
 
+/*t_vec3	rgb_to_hsl(t_rgba rgb)
+{
+	float	maxC;
+	if (rgb.r >= rgb.g)
+		if (rgb.r >= rgb.b)
+			maxC = rgb.r;
+	if (rgb.g >= rgb.r)
+		if (rgb.g >= rgb.b)
+			maxC = rgb.g;
+	if (rgb.b >= rgb.r)
+		if (rgb.b >= rgb.g)
+			maxC = rgb.b;
+	
+	float	minC;
+	if (rgb.r <= rgb.g)
+		if (rgb.r <= rgb.b)
+			minC = rgb.r;
+	if (rgb.g <= rgb.r)
+		if (rgb.g <= rgb.b)
+			minC = rgb.g;
+	if (rgb.b <= rgb.r)
+		if (rgb.b <= rgb.g)
+			minC = rgb.b;
+
+	float	delta = maxC - minC;
+
+	float	h = 0.0;
+	if (delta > 0.0)
+	{
+		if (maxC = rgb.r)
+		{
+			h = (rgb.g - rgb.b) / delta;
+			if (h < 0.0)
+				h += 6.0;
+		}
+		else if (maxC == rgb.g)
+			h = (rgb.b - rgb.r) / delta + 2.0;
+		else
+			h = (rgb.r - rgb.g) / delta + 4.0;
+		h /= 6.0;
+	}
+	
+	float	l = (maxC + minC) / 2.0;
+	float s = 0.0;
+	if (delta > 0.0)
+	    s = delta / (1.0 - abs(2.0 * l - 1.0));
+	return ((t_vec3){h, s, l})
+
+}
+
+t_vec3	cylinder_normal(t_vec3 point, t_vec3 a_base, t_vec3 b_top, float ra)
+{
+	t_vec3	pa = substract_vec3(point, a_base);
+	t_vec3	ba = substract_vec3(b_top, a_base);
+
+	float	baba = dot_product_vec3(ba, ba);
+	float	paba = dot_product_vec3(pa, ba);
+
+	float	h = dot_product_vec3(pa, ba) / baba;
+
+	t_vec3	close_point = add_vec3(a_base, (t_vec3){h * ba.x, h * ba.y, h * ba.z});
+	t_vec3	normal = substract_vec3(point, close_point);
+	t_vec3	light_dir = normalize_vec3(substract_vec3(light_pos - intersection));
+
+}*/
+
 int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
 {
 	t_cylinder	*cy;
