@@ -57,8 +57,6 @@ void move_camera(t_scene *scene, mlx_t *mlx)
 
 long put_color(t_ray *ray)
 {
-    //return ((int)ray.rgba.b + (int)ray.rgba.g * 256 + (int)ray.rgba.r * 256 * 256);
-    //return ((255 << 24) | (ray.rgba.r << 16) | (ray.rgba.g << 8) | ray.rgba.b);
     return ((int)ray->rgba.r << 24 | (int)ray->rgba.g << 16 | (int)ray->rgba.b << 8 | (int)ray->rgba.a);
 }
 

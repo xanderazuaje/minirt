@@ -43,10 +43,10 @@ vec4 cylIntersect( in vec3 ro, in vec3 rd, in vec3 a, in vec3 b, float ra )
         return vec4( t, ba*sign(y)/sqrt(baba) );
     }
     return vec4(-1.0);//no intersection
-}
+}*/
 
 // normal at point p of cylinder (a,b,ra), see above     //shading and lightning
-vec3 cylNormal( in vec3 p, in vec3 a, in vec3 b, float ra )
+/*vec3 cylNormal( in vec3 p, in vec3 a, in vec3 b, float ra )
 {
     vec3  pa = p - a;
     vec3  ba = b - a;
@@ -104,9 +104,9 @@ vec3 cylNormal( in vec3 p, in vec3 a, in vec3 b, float ra )
 	    s = delta / (1.0 - abs(2.0 * l - 1.0));
 	return ((t_vec3){h, s, l})
 
-}
+}*/
 
-t_vec3	cylinder_normal(t_vec3 point, t_vec3 a_base, t_vec3 b_top, float ra)
+/*t_vec3	cylinder_normal(t_vec3 point, t_vec3 a_base, t_vec3 b_top, float ra)
 {
 	t_vec3	pa = substract_vec3(point, a_base);
 	t_vec3	ba = substract_vec3(b_top, a_base);
@@ -114,9 +114,10 @@ t_vec3	cylinder_normal(t_vec3 point, t_vec3 a_base, t_vec3 b_top, float ra)
 	float	baba = dot_product_vec3(ba, ba);
 	float	paba = dot_product_vec3(pa, ba);
 
-	float	h = dot_product_vec3(pa, ba) / baba;
+	float	h = paba / baba;
 
-	t_vec3	close_point = add_vec3(a_base, (t_vec3){h * ba.x, h * ba.y, h * ba.z});
+	t_vec3	normal = substract_vec3(pa, (t_vec3){ba.x * h, ba.y * h, ba.z * h});//((pa - ba * h) / ra); //vector normal
+	t_vec3	close_point = add_vec3(a_base, normal);
 	t_vec3	normal = substract_vec3(point, close_point);
 	t_vec3	light_dir = normalize_vec3(substract_vec3(light_pos - intersection));
 
@@ -139,15 +140,16 @@ int cylinder_intersection(t_ray *ray, t_scene_element *elem, int bounce)
 	float	baoc = dot_product_vec3(ba_c_vec_dir, oc_ro_less_a);
 
 	float	k2 = baba - bard * bard;
-	float	k1 = baba * dot_product_vec3(oc_ro_less_a, ray->direction) - baoc * bard;
+	float	k1 = baba * dot_product_vec3(oc_ro_less_a, ray->normalized) - baoc * bard;
 	float	k0 = baba * dot_product_vec3(oc_ro_less_a, oc_ro_less_a) - baoc * baoc - (cy->diameter / 2) * (cy->diameter / 2) * baba;
 
-	float	h_discriminant = k1 *k1 - k2 * k0;
+	float	h_discriminant = k1 * k1 - k2 * k0;
 	if (h_discriminant < 0)
-		return (0);
+		return (0);//(t_vec3){-1, -1, -1};
 	h_discriminant = sqrt(h_discriminant);
 
 	float	t = (-k1 - h_discriminant) / k2;
+
 	float	y = baoc + t * bard;
 	if (y > 0.0 && y < baba)
 	{
@@ -155,7 +157,12 @@ int cylinder_intersection(t_ray *ray, t_scene_element *elem, int bounce)
 		ray->rgba.g = cy->rgba.g;
 		ray->rgba.b = cy->rgba.b;
 		ray->rgba.a = 255;
-		return (1); //change vec4( t, (oc+t*rd - ba*y/baba)/ra )
+		t_vec3 t_mult_rd = (t_vec3){t * ray->normalized.x, t * ray->normalized.y, t * ray->normalized.z};
+		t_vec3 ba_mult_y_div_baba = (t_vec3){t * ray->normalized.x / baba, t * ray->normalized.y / baba, t * ray->normalized.z / baba};
+		t_vec3 oc_add_t_mult_rd_ba_mult_y_div_baba = substract_vec3(add_vec3(oc_ro_less_a, t_mult_rd), ba_mult_y_div_baba);
+		t_vec3 normal = (t_vec3){oc_add_t_mult_rd_ba_mult_y_div_baba.x / (cy->diameter / 2), oc_add_t_mult_rd_ba_mult_y_div_baba.y / (cy->diameter / 2), oc_add_t_mult_rd_ba_mult_y_div_baba.z / (cy->diameter / 2)};
+		(void)normal;
+		return (1); //change vec4(t, (oc + t * rd - ba * y / baba) / ra)   //t, normal.x, normal.y;
 	}
 	if (y < 0.0)
     	t = (0.0 - baoc) / bard;
@@ -168,9 +175,10 @@ int cylinder_intersection(t_ray *ray, t_scene_element *elem, int bounce)
 		ray->rgba.g = cy->rgba.g;
 		ray->rgba.b = cy->rgba.b;
 		ray->rgba.a = 255;
-		return (1); //vec4( t, ba*sign(y)/sqrt(baba) )
+		// ba * sign(y) / sqrt(baba);
+		return (1); //vec4(t, ba * sign(y) / sqrt(baba))
 	}
-	return (0);
+	return (0); //(t_vec3){-1, -1, -1};
 }
 
 /*int cylinder_intersection(t_ray ray, t_scene_element *elem, int bounce)
